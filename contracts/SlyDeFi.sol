@@ -89,9 +89,10 @@ contract SlyDeFi is
     mapping(address => uint256) public userWinnings;
 
     uint64 public lastETHPrice;
+    uint64 lastUpkeep;
     uint256 immutable MINVALUE;
     uint256 immutable UPKEEPBLOCKDISTANCE;
-    uint64 lastUpkeep;
+
     uint80 lastRoundId;
 
     //@notice Accurate reflaction of user base value(s) sum
@@ -120,9 +121,6 @@ contract SlyDeFi is
     IAaveLendingPool public aaveLendingPool =
         IAaveLendingPool(0x9198F13B08E299d85E096929fA9781A1E3d5d827);
 
-    //ISuperTokenFactory public superTokenFactory = ISuperTokenFactory(0x200657E2f123761662567A1744f9ACAe50dF47E6);
-    //ISuperfluidToken aTokenX;
-
     // supertokenfactory mumbai 0x200657E2f123761662567A1744f9ACAe50dF47E6
     // aave pool mumbai -  0x9198F13B08E299d85E096929fA9781A1E3d5d827
     // aave stable interest: 0x10dec6dF64d0ebD271c8AdD492Af4F5594358919
@@ -149,7 +147,8 @@ contract SlyDeFi is
 
     //* --- Initialize **//
 
-    ///this should be in constructor.
+    ///@dev this should be in constructor. maybe?
+    ///@notice sets transfer approval for ERC20s
     function setERCAllowance(address _erc) public onlyOwner returns (bool) {
         if (_erc == address(0)) {
             _erc = address(dai);
@@ -174,6 +173,8 @@ contract SlyDeFi is
     error UserAlreadyHasPositionEndingOnThisDay(uint16 endDay, address user);
     ///@notice error only if performUpkeep in progress or perfomed without check
     error DoingUpkeepOrNoCheck(uint256 thisblock, uint256 lastblock);
+    ///@notice error if caller has no winnings to withdraw
+    error NoWinningsToWithdraw(address user);
 
     //*--- Modifiers ---*//
     modifier ensureUniqueForEnd(uint16 _endsOn) {
@@ -197,8 +198,11 @@ contract SlyDeFi is
     }
 
     //*--- External ---*//
-    //@notice submitPosition(): creates position, transfers dai, mints nft, changes state
-    ///#if_succeeds msg.sender != _to ==> old(X) == _balances[_to];
+    ///@notice submitPosition(): creates position, transfers dai, mints nft, changes state
+    ///@param _graph: array of uint32, length 30, represents points in day-price matrix
+    ///@param _value: base value of position
+    ///@param _end: end date of position
+    ///@param _imghash: image hash or IPFS metadata link for NFT
     function submitPosition(
         uint32[30] memory _graph,
         uint128 _value,
@@ -229,13 +233,6 @@ contract SlyDeFi is
         uint256 beforeDai = dai.balanceOf(address(this));
         require(beforeDai >= currentPosition.baseValue);
 
-        aaveLendingPool.deposit(
-            address(dai),
-            currentPosition.baseValue,
-            address(this),
-            0
-        );
-
         userPositions[msg.sender].push(currentPosition.id);
         getPositionById[currentPosition.id] = currentPosition;
         //dayPresentCapital[end] += currentPosition.baseValue;
@@ -252,8 +249,16 @@ contract SlyDeFi is
                 currentPosition.graph[i]
             ] += currentPosition.baseValue;
         }
+
         totalDepositedDai += currentPosition.baseValue;
         userDepositedDai[msg.sender] += currentPosition.baseValue;
+
+        aaveLendingPool.deposit(
+            address(dai),
+            currentPosition.baseValue,
+            address(this),
+            0
+        );
         safeMint(msg.sender, posId);
 
         _setTokenURI(posId, currentPosition.imghash);
@@ -265,7 +270,8 @@ contract SlyDeFi is
         return true;
     }
 
-    ///@dev revert on receive() ?
+    ///@dev should revert on receive() ?
+    ///@param _beneficiary: address to send entire contract native balance to
     function withdraw(address _beneficiary) public onlyOwner {
         (bool success, ) = payable(_beneficiary).call{
             value: address(this).balance
@@ -273,12 +279,9 @@ contract SlyDeFi is
         require(success, "transfer failed");
     }
 
-    /////@param roundId: The round ID.
-    /////@param price: The price.
-    /////@param startedAt: Timestamp of when the round started.
-    /////@param timestamp: Timestamp of when the round was updated.
-    /////@param answeredInRound: The round ID of the round in which the answer was computed.
-    ///@dev external chainlink keeper call. calldata not used. remove. @security public function
+    ///@dev calldata not used. remove? @security public function, needs to be external
+    ///@dev if function should prevent re-entrancy
+    ///@notice chainlink keeper docking function, executes when checkUpkeep() returns true
     function performUpkeep(
         bytes calldata /* performData */
     ) public {
@@ -326,24 +329,6 @@ contract SlyDeFi is
         day += 1;
     }
 
-    ///@dev @TODO: fix this. unnecessary memory operations.
-    function checkUpkeep(
-        bytes calldata /* checkData */
-    )
-        public
-        view
-        override(KeeperCompatibleInterface)
-        returns (bool upkeepNeeded, bytes memory upkeepData)
-    {
-        if ((block.number - lastUpkeep) > UPKEEPBLOCKDISTANCE) {
-            upkeepNeeded = true;
-            upkeepData;
-        } else {
-            upkeepNeeded = false;
-            upkeepData;
-        }
-    }
-
     //*--- Public ---*//
     ///@notice burns ERC721, credits base value of underlying position. Returns true if successful.
     ///@param _tokenIdtoBurn: The token ID of the requested token to burn.;
@@ -378,6 +363,8 @@ contract SlyDeFi is
             }
         }
 
+        if (userPositions[msg.sender].length == 0) isActive[msg.sender] = false;
+
         userDepositedDai[msg.sender] -= burnablePosition.baseValue;
         ///@dev @security: potential fix for day_tvl loop. implies aditional check.
         getPositionById[burnablePosition.id].id = 0;
@@ -387,8 +374,13 @@ contract SlyDeFi is
 
     ///@dev @TODO: this should be a stream conditional on continuation of underlying position principal.
     ///@dev @TODO: this should take in as argument the type of asset liquidated. (e.g. ETH, DAI, DOG, CAT etc.)
-    function withdrawWinnings() public payable nonReentrant {
+    ///@dev @TODO: even if nonReeentrant, should follow c-e-i.
+    ///@notice lets User to pull DAI winnings. Returns true on success.
+    function withdrawWinnings() public nonReentrant returns (bool) {
         require(userWinnings[msg.sender] > 0);
+
+        if (userWinnings[msg.sender] == 0)
+            revert NoWinningsToWithdraw({user: msg.sender});
 
         uint256 prevUserDai = dai.balanceOf(msg.sender);
 
@@ -399,7 +391,10 @@ contract SlyDeFi is
         );
 
         require(prevUserDai < dai.balanceOf(msg.sender), "Withdrawal failed");
+
         userWinnings[msg.sender] = 0;
+
+        return true;
     }
 
     function pause() public onlyOwner {
@@ -421,15 +416,12 @@ contract SlyDeFi is
         return super.supportsInterface(interfaceId);
     }
 
-    //*--- Internal ---*//
-    // function _baseURI() internal pure override returns (string memory) {
-    //     return "https://slyde.fi";
-    // }
-
     function safeMint(address to, uint256 tokenId) internal {
         _safeMint(to, tokenId);
     }
 
+    ///@notice ERC721 hook
+    ///@dev @security: private maybe?
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -438,7 +430,8 @@ contract SlyDeFi is
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
-    /* --- override some more --- */
+    ///@notice burns an ERC721 given its id
+    ///@param tokenId: The token ID of the token to burn
     function _burn(uint256 tokenId)
         internal
         override(ERC721, ERC721URIStorage)
@@ -446,6 +439,40 @@ contract SlyDeFi is
         super._burn(tokenId);
     }
 
+    /* ===========   ============= */
+
+    //*--- Private ---*//
+
+    //*--- View ---*//
+
+    ///@notice view function called repetedly by Chainlink keepers service.
+    ///@notice determines if upkeep is needed. returns true if upkeep is needed.
+    ///@dev the UPKEEPBLOCKDISTANCE might have been set for mainent. oups.
+    function checkUpkeep(
+        bytes calldata /* checkData */
+    )
+        public
+        view
+        override(KeeperCompatibleInterface)
+        returns (bool upkeepNeeded, bytes memory upkeepData)
+    {
+        if ((block.number - lastUpkeep) > UPKEEPBLOCKDISTANCE) {
+            upkeepNeeded = true;
+            upkeepData;
+        } else {
+            upkeepNeeded = false;
+            upkeepData;
+        }
+    }
+
+    ///@notice checks if the provided address is registered as active protocol participant.
+    ///@param _who: address passed to isActive mapping to return a boolean conclusion for.
+    function isUserActive(address _who) public view returns (bool) {
+        return isActive[_who];
+    }
+
+    ///@notice returns the URI of a token given its ID.
+    ///@param tokenId: for what token ID to return the URI.
     function tokenURI(uint256 tokenId)
         public
         view
@@ -455,16 +482,8 @@ contract SlyDeFi is
         return super.tokenURI(tokenId);
     }
 
-    /* ===========   ============= */
-
-    //*--- Private ---*//
-
-    //*--- View ---*//
-
-    function isUserActive(address _who) public view returns (bool) {
-        return isActive[_who];
-    }
-
+    ///@notice returns an array of position IDs owned by a given address.
+    ///@param _who: The address to check for owned positions.
     function getUserPositions(address _who)
         public
         view
@@ -473,6 +492,8 @@ contract SlyDeFi is
         positionIDs = userPositions[_who];
     }
 
+    ///@notice given an id, returns the position with that id. Returns emplty position if _id is not found or 0.
+    ///@param _id: The id of the position you seek.
     function getsPosition(uint32 _id)
         public
         view
