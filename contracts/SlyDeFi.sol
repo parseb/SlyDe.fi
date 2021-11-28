@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.10;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -12,13 +12,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
-//import { IConstantFlowAgreementV1 } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
-//import { ISuperTokenFactory } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperTokenFactory.sol";
-//import { ISuperfluidToken } from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluidToken.sol";
-//import { SuperTokenFactory } from "@superfluid-finance/ethereum-contracts/contracts/superfluid/SuperTokenFactory.sol";
-//import { SuperfluidToken } from "@superfluid-finance/ethereum-contracts/contracts/superfluid/SuperfluidToken.sol";
-
-//@author:parseb
+//@author: @parseb
 //@title SlyDe.Fi - a preditction game on pooled yeld farming
 //@custom: security-contact @parseb
 
@@ -67,25 +61,16 @@ contract SlyDeFi is
     mapping(address => bool) public isActive;
     //@notice dayPricePositions: used to add and retrieve position ID in price-day matrix
     mapping(uint16 => mapping(uint32 => uint32[])) public dayPriceGetPositions;
-    //@notice endDateWinners: used to collect possitions that will get rewarded at the end of cycle
-    ///@dev refactoring will be lots of 'fun'
-    //mapping(uint16 => uint32[]) public endDateWinners;
-    //@notice isPositionInWinArray: to avoid duplicate entry of PositionID in endDateWinners[enddate] uint32[]
-    mapping(uint32 => bool) public isPositionInWinArray;
     //@notice getPositionById
     mapping(uint32 => Position) public getPositionById;
     //@notice check if user has position for submitted timeframe: userHasTimeEndPosition[msg.sender][_enddate]
     ///@dev temporary limitation, re-asses
     mapping(address => mapping(uint16 => bool)) public userHasTimeEndPosition;
-
     //@notice userPositions: get all positions of msg.sender
     mapping(address => uint32[]) public userPositions;
-
     //@notice tvl of day-price matrix cell, used to determine share of winnings. @security: review
     mapping(uint16 => mapping(uint64 => uint128)) public dayPriceTVL;
-
     //mapping(uint16 => uint32) public endDayBudget;
-
     mapping(address => uint256) public userWinnings;
 
     uint64 public lastETHPrice;
@@ -120,12 +105,6 @@ contract SlyDeFi is
     IaToken public aToken = IaToken(0x639cB7b21ee2161DF9c882483C9D55c90c20Ca3e);
     IAaveLendingPool public aaveLendingPool =
         IAaveLendingPool(0x9198F13B08E299d85E096929fA9781A1E3d5d827);
-
-    // supertokenfactory mumbai 0x200657E2f123761662567A1744f9ACAe50dF47E6
-    // aave pool mumbai -  0x9198F13B08E299d85E096929fA9781A1E3d5d827
-    // aave stable interest: 0x10dec6dF64d0ebD271c8AdD492Af4F5594358919
-    // aave variable interest: 0x6D29322ba6549B95e98E9B08033F5ffb857f19c5
-    // polygon contracts: https://docs.aave.com/developers/deployed-contracts/matic-polygon-market
 
     //@notice owner set to msg.sender on create
     constructor() ERC721("SlyDe.Fi", "SLYDE") {
@@ -313,10 +292,6 @@ contract SlyDeFi is
             winner.shares = uint16(
                 (winner.baseValue * 100) / dayPriceTVL[day][lastETHPrice] + 1
             );
-
-            isPositionInWinArray[winner.id] = true;
-
-            //redeamableEndShares[winner.end] += winner.shares;
 
             uint256 budget = (aToken.balanceOf(address(this)) -
                 totalDepositedDai) / 31;
