@@ -47,7 +47,10 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-
+    //
+    // why use this testnet endpoint when you can sign up for free using this link? 
+    // (play nice, and we both get 100$ in credit moneyies )
+    // https://alchemy.com/?r=e430c96d7492cf51 
     mumbai: {
       provider: function() {
         return new HDWalletProvider(mnemonic, "https://polygon-mumbai.g.alchemy.com/v2/H1uL0TNVf0DgitNXNonaLnl8EhBT-6iZ")},
