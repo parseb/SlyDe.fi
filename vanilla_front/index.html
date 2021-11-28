@@ -1,0 +1,426 @@
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SlyDe.Fi</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.2.0/nouislider.min.css" integrity="sha256-ppzFVggmnh0AJD5hxvYFeTnhZ8e6ow4Xc9gzx1QsutI=" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  </head>
+
+  <body>
+    <headbar>
+      <nav class="navbar navbar-expand-lg navbar-cusom">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <!-- <img src="img/logo4.png" width="142" height="43" class="d-inline-block align-top" alt="slydefi logo"> -->
+            <h1 class="logo"> SlyDe.Fi</h1>
+          </a>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button> -->
+
+        <ul class="nav navbar-nav" id="nav-right" style="float: right">
+          <button class="btn btn-outline-secondary d-none" id="btn-login">
+            <img src="./img/metamask_logo.png" width="40" /> Log In 
+          </button>
+          <button class="btn btn-outline-secondary d-none" id="btn-logout">
+            <img src="./img/metamask_logo.png" width="40" /> Log Out 
+          </button>
+        </ul>
+        </div>
+      </nav>  
+    </headbar>
+  
+    <hr>
+  
+    <div class="container">
+      
+      <div class="row">
+ 
+        <div class="col-2">
+          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false">🧐About Us😏</button>
+            <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Ξ/$</button>
+            <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Account</button>
+            <!-- <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"></button> -->
+          </div>
+        </div>
+        <div class="col-10">
+          <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="container">
+                    <br>
+                  <h5>What do you mean by "Us"?</h5>
+                    <hr class="noborder">
+                      <p class="about-answer">
+                        You and Me, accross the world, baybe. 
+                      </p>
+                    <br>
+                  <h5>What is the meaning of all of this?</h5>
+                    <hr class="noborder">
+                      
+                    <p class="about-answer">
+                        Slide on. 🤙 
+                    </p>
+                    <br>
+                    <h5>What are you selling?</h5>
+                    <hr class="noborder">
+                      <p class="about-answer">
+                        <p> 
+                          So, what can you do here to acummulate more capital, put your preditction power to test, potentially win big, all while continuing to keep banking on the unbanked? <br>
+                          (between you and me: the poors be chasin' that banked lifestyle! jaja) 
+                        </p>
+                         <p>
+                          You're in the right place, cuz we both woke, lit and smart, and ofc rich. And guess what? <br >
+                          Not only do you get to keep that hard-earned juice of yours, but you also get to be a bigbo$$ playa'. You get to slide with fam, cuz, not-gonna-lie, we femly sis. We bros too, whatever slides your boat. 
+                         <br>
+                         </p>
+                         
+                        <p>
+                          Basic stuff. <br> I'm gonna be your bookie. Yeah I know, a rich guy like me.. I just like doing it.. for fun.<br >
+                         So, you are going to give me a day-by-day price prediction for your chosen asset along with the right to move some of your valueables around. <br >
+                        </p>
+                         <p>Your good ol' ERC20s are going to generate that basic interest. <br> 
+                          Calm down, I'm not taking it! <br> 
+                          Moving on... That interest, <b>your interest</b>, goes into a common pool , and if you get the price spot-on for one of the days (easy) you get to pull out a big chunk of the total community bank. <br >
+                          There's a minimum. Trust me, it's in our <b>best interest</b>. I might be doing it for fun, but we can't let any fool fresh of the street to be rubbing sholders with us. We need to maintain some basic level of prestige and, you know, decency. We are a brand afterall. We can't just let anyone flash our NFT bling. <br >
+                          There's rules, sure. We both know that. But that's why we have secretaries and lawyers.
+                         </p>
+                         <p>
+                           <b>Don't tell me you're poor!</b> 🤦 <br />
+                           <p> Anyway, there might be some jobs for you. You people like jobs, don't you?
+                            Yep, got that right pal! I am a job creator! <br> Go to HR and they might have roles and places to put you in, and, who knows, one day, if you work hard enough, you'll be like me! <br>
+                            Now, be on your way! I have to get me some double-irish with double-dutch action.   
+                          </p>
+                         </p>
+
+                        </p>
+
+                      <h5>I am a very serious person and I demand a proper explanation</h5>
+                      <hr class="noborder">
+                      <p class="about-answer">
+                        There are several aspects at play at here. First of all, you did not feel the need for a transferable, unique, instantly
+                        redeemable banknote this morning. You do not really need it, in the same way you do not really need the stock market.<br>
+                        The type of NFT that you are able to generate here does not solve a problem in the exact same way the stock market does not solve one.
+                        What utility you ascribe to one versus the other is highly subjective. The fact that your pension is tied up in the stock market is the direct result of a cultural choice that you or your fellowwomen have made. There is nothing in the holly book or in Philosophiæ Naturalis Principia Mathematica that hints to the NYSE as a hard fact of nature.<br> 
+                        As opposed to intermediated markets, NFTs are trouble. The SLYDE ERC721 follows this tradition. An NFT has the duty to be more troublesome than its predecessors. It does not solve a problem per se, but it might just be able to coagulate a community around price predictions in a decentralized and fairly trust-less way. <br>
+                        It can, in theory, act like a bond. Or like a customizable banknote. Maybe more importantly, it can prove one's (human or alpha) predictive track record / performance. 💡 <br>
+                        Or, it can be a trophy: irrefutable proof that the holder (or maybe not the holder) did manage to predict the price of X at Y moment in time. It can therefore become more valuable as an NFT than its base redeemable value which can only be claimed by burning it. Which, in turn, reminds me: since it is instantly redeemable, can likely also serve as collateral?
+                      </p>
+                      <p class="about-answer">
+		                    As you can hopefully see, this gets pretty cool pretty fast and hopefully you have already understood that you are putting me on the spot, in a slightly awkward position to define something that would not be wise to define at this point. I mean just add a reward function for informational asymmetry and who knows… this might take off to the moon on its own. 
+                        One last thing I want to add to the potential pile of functions this can fulfill: it can theoretically prove to be a chainlink validator. The price information, as well as the prize allocation is done exclusively by chainlink products. All it knows and does is spoonfed by chainlink pricefeed and keepers. I might be naive or at best lacking sufficient knowledge about the magic formula for incorruptibility, but after-all, the pope is the pope. And, as we all likely know from GTA San Andreas, the pope does shit in the woods. And, as a direct consequence of that 50 cents to a few dollars up or down when pricing crypto is integrity pennies to the dollar if the upside happens to be “millions”. In short, taking the integrity pennies over the millions from the table results in a statistical anomaly. Not doing so is madness. So it could in theory be a 'price discovery' mechanism for oracle integrity. <br>
+                        It is totally dependent on chainlink. 
+                      </p>
+                      <p class="about-answer">
+                        Lastly, this (initially) is meant to be like pooltodghether, but for the more affluent segment. Not for those who need to be incentivised to put money aside, but for those who believe they earned it. <br> Group predictions (DAOs, pooltodghether pools, etc) would also be cool.
+                      </p>
+                      <p class="about-answer">
+                        Do you know any other project that mints prediction graphs as NFTs and distributes yield form pool farming for precise day-price guesses? <br>
+                        I bet your hat that you do not. <br>
+                        Now you do. <br>
+                        It doesn't solve any problem today. It might solve one tomorrow. <br> It's defi. And defi is still finance. So it's a bit sly and never solves a specific problems. It just puts value in a leash and walks it around town in a way that 'others' find valuable. </br>  
+                      </p>
+                      <p>
+                        It's a toy, as all DeFi protocols are. 
+                      </p>
+                      <p>
+                        But, if it somehow made you feel better, or you think that it's an effort in the "a better world" direction, it means it has some value and the investment so far was likely worth it. <br>
+                        If, on the contrary, as a direct result of being here you look less hopeful towards our shared future... find me, and drop me some real talk. I want to hear it. nopaper@slyde.fi will do it. <br>
+                      </p>
+                      <p>
+                        Thank you for spending some of your time here serious person. <br>
+                        Until next time. <br><br>
+
+                        Kind Regards  
+                      </p>
+                    <br>
+                    <h5>Process Flow Chart</h5>
+                      <hr class="noborder">
+                      <p class="about-answer">
+                        Imagine, when you mint a position, its ID goes into a [DAY][PRICE] mapping. The base value goes into its corresponding Aave pool. <br>
+                        Everyday, "once a day", a chainlink keeper, increments the DAY and allocates a portion of the yield to all positions that have their ID in that day's [DAY][PRICE] array.<br>
+                        The allocated share is proportional to the position's base value as relative to to the sum of that day's winning positions. (100% if only one position is in the win array.) <br>
+                      </p>
+                      <p about-answer>
+                        If there's something you're still missing... try drawing the chart yourself. And.. ask. If you feel like it. <br>
+                      </p>
+                        
+              </div>
+            </div>
+            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              <div class="container">
+                <br>
+                <h5>Configure</h5>
+                <hr class="noborder">
+                <div class="row">
+                <div class="col-4">
+                  <label for="howmuch" class="form-label"><b>This much</b></label>
+                  <input type="number" class="form-control" id="thismuch" min="1000" placeholder="1000" onchange="thisMuchChanged(this.value)" >
+                </div>
+                <div class="col-4">
+                  <label for="asset_type" class="form-label"><b>of this</b></label>
+
+                  <select class="form-select" id="ofthis" onchange="ofThisChanged(this.value)" aria-label="Asset">
+                    <option selected>DAI</option>
+                    <option >wETH</option>
+                    <option >wMATIC</option>
+                    <option value="3">wBTC</option>
+                  </select>
+
+                </div> 
+                <div class="col-4">
+                  <label for="timeframe" class="form-label"><b>for this many days</b></label>
+                  <input type="number" class="form-control" id="thislong" min="30" placeholder="30" onchange="thisLong(this.value)" >
+                </div>
+                
+                </div>
+                <br>
+                <div class="row">
+                  <h5 class="float-right">Define</h5>
+                  <hr class="noborder">
+                  <div id=sliderhouse-wrapper>
+                    <div class="sliderscroll" id="slider-house">  <!--Sliders Start-->
+                    </div><!--Sliders End-->
+                  </div>
+                  
+                  <br>
+                </div>
+                <div class="row mint-request">
+                  <div class="col-6">
+                    <h5>Request</h5>
+                    <hr class="noborder">
+                    <div class="requestbox" id="approve-col">
+                      <!-- <ul>
+                      <li id='howmuchshow'></li>
+                      <li id='endsonshow'></li>                   
+                    </ul> -->
+                    <div class="chartdiv-main" id="chartdiv-main">
+                      <div id="chart_div" class="chartdiv" ></div>
+                      <div class="overlay">
+                        <img src="./img/300_overlay2.png" alt="slidefi logo slydefi" >
+                      </div>
+                    </div>
+                    
+                    <button class="btn btn-outline-secondary btn-lg btn-block btn-full d-none" id="btn-approve" onclick="clickedApprove()">APPROVE <span id="howmuchapprove"></span></button>
+                    </div>
+                    <div class="approve-success d-none" id="approve-success">
+                      <h4 style="color: #cf096c">
+                        <i class="bi bi-file-earmark-check"></i> 
+                        <i class="fas fa-check-circle">Approved! </i>
+                      </h4> 
+                      <br>
+                      <h5>
+                        Prediction Ready for Minting!
+                      </h5>
+                    </div>
+                    <div class="approve-wait d-none" id="approve-wait">
+                      <p color="#ffffff">
+                        <i class="bi bi-archive"> Please Stand by while we check our files.</i> <br>
+                        <i class="bi bi-binoculars">Still checking</i> <br>
+                        <i>Please take a 🪑. I'll call you up when it's settled.</i><br>
+                        <i class="bi bi-cup">You can grab yourself a drink from there while we wait. </i><br>
+                        <i>Sure you want that 🥤 straw? </i><br>
+                        <i>That might be it, but still, it could be the straw that brakes the 🐪's back.</i><br>
+                        <i>I think George 🤓 found your confirmation.</i><br>
+                        <i class="bi bi-patch-question">Where was it?</i><br>
+                        <i>By the second 🌳 under the 🪕?</i><br>
+                        <i>Yes George, do you see anyone else waiting?</i>
+                      </p>
+                    </div>
+                    
+                  </div>
+                  <div class="col-6" id="mint-col">
+                    <h5>Mint</h5>
+                    <hr class="noborder">
+                    <div id="willmint-img-div">
+                      <img id="willmint-img" src="./img/nft_placeholder2.png" alt="willbeminted" >
+                    </div>
+                    <button class="btn btn-outline-secondary btn-lg btn-block btn-mint btn-full d-none" id="btn-mint" onclick="clickedMint()" >MINT</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade show" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-home-tab">
+              <br>
+              <div class="container">
+                <div class="row">
+                  <div class="col-6">
+                    <h5>Harvest Ready</h5>
+                    <hr class="noborder">
+                    <br>
+                    <div class="row">
+                      <div class="col">
+                        <div class="no-deposit-saw text-center" id="no-deposit-saw">
+                          <h5 style="color: white !important">You can only reap what you 🪚 <br /> Or smth. like that.</h5>  
+                        </div>
+                        <div class="row text-center">
+                            <div class="no-wins d-none" id="nowins" >
+                              <h1>📈👩‍💻📉</h1> 
+                             <h5 style="color: white !important">nnno, not yet. <br> 
+                               Later. <br /> Maybe.</h5>  
+                            </div>
+                            <div class="haswins d-none" id="haswins">
+                                <p class="claimable-balance-number d-none" id="claimable-amount">
+                                29000
+                                </p>
+                                <p> DAI </p>
+                                <div class="row">
+                                  <button class="btn-block btn-outline-secondary" onclick="claimMaxWinAmount()">Claim</button>
+                                </div>
+                            </div>
+                          </div>
+                          
+                      </div>
+                    </div>
+                   
+                  </div>
+                  <div class="col-6">
+                    <h5>Das Kapital</h5>
+                      <hr class="noborder">
+                      <br>
+                      <div class="row text-center">
+                        <div class="col">
+                          <h5 class="has-deposit d-none" id="total-deposited-amount" style="color: white !important;">
+                            
+                          </h5>
+                          <div class="no-deposit" id="no-deposit">
+                            <h1>💰😎💰</h1> <br />
+                              <h5 style="color: white !important";>you poor or what? <br> Get a job you filthy animal!</h5>
+                              <h5><a href="https://bankless.pallet.xyz/jobs">I shall get a job ser, Thank you very much!</a></h5> <br />
+                              <h5><a href="https://www.youtube.com/watch?v=EZNIQTCfPa8&ab_channel=EntertainmentTonight">I shall certainly not! Who do you.. </a><br />
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+
+                <h5>Active Predictions</h5>
+            <hr class="noborder">
+            <br>
+              <div class="row">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="tablecol text-center">id</th>
+                      <th scope="col" class="tablecol text-center">Shares</th>
+                      <th scope="col" class="tablecol text-center">Base Value</th>
+                      <th scope="col" class="tablecol text-center">Graph url</th>
+                      <th scope="col" class="tablecol text-center">Matures On</th>
+
+                    </tr>
+                 </thead>
+                 <tbody id="positions-table">
+      
+                 </tbody>
+                </table>
+                </div>
+              </div>
+              <h5>NFTs</h5>
+            <hr class="noborder">
+            <div class="row">
+              <div class="table">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="tablecol text-center">TokenId</th>
+                      <th scope="col" class="tablecol text-center">Symbol</th>
+                      <th scope="col" class="tablecol text-center">Minted at block</th>
+                      <th scope="col" class="tablecol text-center">Amount</th>
+                      <th scope="col" class="tablecol text-center">Address</th>
+                      <th scope="col" class="tablecol text-center">IPFS</th>
+                      <th scope="col" class="tablecol text-center">OpenSea</th>
+                      <th scope="col" class="tablecol text-center">Burn</th>
+                    </tr>
+                 </thead>
+                 <tbody id=user-nft-table>
+                  
+                 </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+              
+            </div>
+          </div>
+        </div>
+      
+      </div>
+
+
+      <div class="container footer">
+        <div class="col-12">
+          <h2 class="comforter-footer-title text-center">Frens</h2>
+        </div>
+        <div class="in-footer-container">
+          <div class="row">
+            
+          </div>
+          <div class="row logosrow">
+              <div class="col-2 center-block my-auto">
+                <img src="./img/logo/chainlink.png" alt="frens logo" class="img-fluid chainlink">
+              </div>
+              <div class="col-2 center-block my-auto">
+                <img src="./img/logo/polygon.png" alt="frens logo" class="img-fluid polygon">
+              </div>
+              <div class="col-2 center-block my-auto">
+                <img src="./img/logo/moralis.png" alt="frens logo" class="img-fluid moralis">
+              </div>
+              <div class="col-2 text-center my-auto">
+                <img src="./img/logo/alchemy.png" alt="frens logo" class="img-fluid alchemy">
+              </div>
+              <div class="col-2 text-center my-auto">
+                <img src="./img/logo/fleek-logo.png" alt="frens logo" class="img-fluid fleek">
+              </div>
+              <div class="col-2 text-center my-auto">
+                <img src="./img/logo/consensys.png" alt="frens logo" class="img-fluid consen">
+              </div>
+             
+        
+          </div>
+        </div>
+   
+      </div>
+      
+    </div>
+
+     
+
+
+
+
+  
+  
+  
+ 
+    
+
+
+    
+ 
+
+
+     
+    <script type="text/javascript" src="./abi/slyabi.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.2.0/nouislider.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js'></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {packages: ['corechart', 'line']});
+      google.charts.setOnLoadCallback(drawBasic);
+    </script>
+    <script type="text/javascript" src="./scripts/html2c.js"></script>
+    
+  </body>
+</html>
